@@ -53,6 +53,23 @@ class TestTKV(unittest.TestCase):
         for key,val in key_vals:
             self.assertEqual(r.get(master + key).status_code, 404)
 
+    def test_no_overwrite(self):
+        key3 = 'key3'
+        val3 = 'val3'
+        r.put(master + key3, val3)
+
+        self.assertEqual(r.get(master + key3).text, val3)
+
+        # try overwriting
+        overwrite_req = r.put(master + key3, 'val4')
+
+        # ensure that fails
+        self.assertEqual(overwrite_req.status_code, 409)
+
+        # assert val is still val3.
+        self.assertEqual(r.get(master + key3).text, val3)
+
+
 
 if __name__ == '__main__':
     unittest.main()
