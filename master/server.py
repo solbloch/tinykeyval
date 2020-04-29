@@ -92,9 +92,27 @@ class MasterServer:
                 r.put(('http://'+vol.ip +'/'+key).encode('UTF-8'), request.body)
 
 
+        @delete('/:key')
+        def delete_val(key):
+            'put file on n servers with least data.'
+
+            # make sure the key exists, else abort 409
+            if self.db.get(key.encode('UTF-8')) == None:
+                abort(409, 'key doesn\'t exist')
+
+            volumes = self.db.get(key.encode('UTF-8')).decode(encoding='UTF-8').split(',')
+
+            for vol in volumes:
+                r.delete(('http://'+ vol +'/' + key).encode('UTF-8'))
+
+            self.db.delete(key.encode('UTF-8'))
+
+
     def fill_db(self):
         'Fill db from volumes.'
         for vol in self.volumes:
+            if vol.content_json() == None:
+                continue
             for f in vol.content_json():
                 # If the object already exists, add the new location to the list.
                 if self.db.get(f['name'].encode('UTF-8')) == None:
