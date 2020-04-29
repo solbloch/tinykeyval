@@ -1,6 +1,6 @@
 # tinykeyval
 
-Inspired by geohot's [minikeyval](https://github.com/geohot/minikeyvalue) and by [SeaweedFS](https://github.com/chrislusf/seaweedfs). 
+Inspired by geohot's [minikeyval](https://github.com/geohot/minikeyvalue) and [SeaweedFS](https://github.com/chrislusf/seaweedfs). 
 
 Python master server with [leveldb](https://github.com/google/leveldb) which has key, values of filename, then a comma separated list of IP's of the volumes where that file is stored.
 
